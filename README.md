@@ -16,6 +16,22 @@
 - **🚀 Production-Ready**: Comprehensive testing, monitoring, and deployment automation
 - **🔒 Enterprise Security**: Input validation, PII redaction, SSRF protection
 
+## 🎬 **Live Demo**
+
+![SOP QA Tool Demo](screenshots/demo-screenshot.png)
+
+*Interactive web interface showing real-time question answering with confidence scoring, source citations, and document management capabilities*
+
+### **Demo Highlights**
+- 🤖 **Intelligent Q&A**: Ask natural language questions about manufacturing procedures
+- 📊 **Confidence Scoring**: Get confidence levels (High/Medium/Low) for each answer
+- 📚 **Source Citations**: View exact document sources and text snippets
+- 🔍 **Advanced Filtering**: Filter by role, equipment, document type
+- 📤 **Export Options**: Export conversations as CSV or Markdown
+- 🏥 **Health Monitoring**: Real-time system health and performance metrics
+
+> **Try it yourself**: Follow the [Quick Start](#-quick-start) guide to run the demo locally!
+
 ## 🚀 **Features & Capabilities**
 
 ### 🤖 **AI-Powered Intelligence**
