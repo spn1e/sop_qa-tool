@@ -1,0 +1,49 @@
+# Core dependencies for Docker deployment
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+python-dotenv>=1.0.0
+
+# Web framework and API
+fastapi>=0.104.1
+uvicorn[standard]>=0.24.0
+streamlit>=1.28.1
+pandas>=2.1.4
+
+# Document processing
+unstructured>=0.11.6
+pytesseract>=0.3.10
+Pillow>=10.1.0
+python-multipart>=0.0.6
+pdfminer.six
+python-docx
+pdf2image
+pi-heif
+pillow-heif
+
+# ML and embeddings
+sentence-transformers>=2.2.2
+transformers>=4.36.0
+torch>=2.1.1
+numpy>=1.24.3
+scikit-learn>=1.3.2
+
+# Vector storage
+faiss-cpu>=1.7.4
+
+# HTTP client
+httpx>=0.25.2
+requests>=2.31.0
+
+# Utilities
+tqdm>=4.66.1
+rich>=13.7.0
+python-json-logger>=2.0.7
+psutil>=5.9.6
+
+# Additional unstructured dependencies
+unstructured-inference
+opencv-python
+matplotlib
+
+# Security (flexible version)
+cryptography>=41.0.0

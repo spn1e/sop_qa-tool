@@ -1,0 +1,17 @@
+# Sample URLs for bulk ingestion testing
+# Lines starting with # are ignored
+# One URL per line
+
+https://example.com/sop/manufacturing-process-001.pdf
+https://example.com/sop/quality-control-checklist.pdf
+https://example.com/sop/safety-procedures.pdf
+https://example.com/sop/equipment-maintenance.pdf
+https://example.com/sop/cleaning-validation.pdf
+
+# Additional test URLs
+https://example.com/wi/work-instruction-001.html
+https://example.com/wi/work-instruction-002.html
+
+# URLs with different file types
+https://example.com/docs/procedure.docx
+https://example.com/docs/guidelines.txt

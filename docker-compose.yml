@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  # API Backend Service
+  api:
+    build:
+      context: .
+      target: production
+    container_name: sop-qa-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MODE=${MODE:-local}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - LOCAL_DATA_PATH=/home/app/data
+      - FAISS_INDEX_PATH=/home/app/data/faiss_index
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - AWS_PROFILE=${AWS_PROFILE:-default}
+      - BEDROCK_MODEL_ID=${BEDROCK_MODEL_ID:-anthropic.claude-3-sonnet-20240229-v1:0}
+      - TITAN_EMBEDDINGS_ID=${TITAN_EMBEDDINGS_ID:-amazon.titan-embed-text-v2:0}
+      - OPENSEARCH_ENDPOINT=${OPENSEARCH_ENDPOINT}
+      - S3_RAW_BUCKET=${S3_RAW_BUCKET}
+      - S3_CHUNKS_BUCKET=${S3_CHUNKS_BUCKET}
+    volumes:
+      - ./data:/home/app/data
+      - ~/.aws:/home/app/.aws:ro  # AWS credentials (read-only)
+    networks:
+      - sop-qa-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # Streamlit UI Service
+  ui:
+    build:
+      context: .
+      target: production
+    container_name: sop-qa-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://api:8000
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+    volumes:
+      - ./data:/home/app/data
+    networks:
+      - sop-qa-network
+    depends_on:
+      api:
+        condition: service_healthy
+    command: ["streamlit", "run", "run_ui.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # Redis Cache (Optional - for production scaling)
+  redis:
+    image: redis:7-alpine
+    container_name: sop-qa-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - sop-qa-network
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    profiles:
+      - production
+
+  # Nginx Reverse Proxy (Optional - for production)
+  nginx:
+    image: nginx:alpine
+    container_name: sop-qa-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/ssl:/etc/nginx/ssl:ro
+    networks:
+      - sop-qa-network
+    depends_on:
+      - api
+      - ui
+    restart: unless-stopped
+    profiles:
+      - production
+
+networks:
+  sop-qa-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+    driver: local

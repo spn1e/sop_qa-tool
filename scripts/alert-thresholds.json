@@ -1,0 +1,12 @@
+{
+  "response_time_ms": 5000,
+  "memory_usage_percent": 80,
+  "disk_usage_percent": 85,
+  "error_rate_percent": 5,
+  "index_age_hours": 24,
+  "cpu_usage_percent": 90,
+  "concurrent_requests": 50,
+  "queue_depth": 100,
+  "embedding_batch_failures": 3,
+  "document_processing_failures": 5
+}

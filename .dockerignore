@@ -1,0 +1,94 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.mypy_cache
+.pytest_cache
+.hypothesis
+
+# Virtual environments
+venv/
+sop-qa-venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+data/raw_docs/*
+data/chunks/*
+data/faiss_index/*
+data/logs/*
+*.log
+.env
+.env.local
+.env.production
+
+# Documentation build
+docs/_build/
+site/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Large files
+*.zip
+*.tar.gz
+*.rar
+
+# Jupyter
+.ipynb_checkpoints
+
+# Node modules (if any)
+node_modules/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Test artifacts
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore

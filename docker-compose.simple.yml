@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # API Backend Service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.simple
+    container_name: sop-qa-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MODE=local
+      - LOG_LEVEL=INFO
+      - LOCAL_DATA_PATH=/home/app/data
+      - FAISS_INDEX_PATH=/home/app/data/faiss_index
+    volumes:
+      - ./data:/home/app/data
+    networks:
+      - sop-qa-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  # Streamlit UI Service
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.simple
+    container_name: sop-qa-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://api:8000
+    volumes:
+      - ./data:/home/app/data
+    networks:
+      - sop-qa-network
+    depends_on:
+      api:
+        condition: service_healthy
+    command: ["streamlit", "run", "sop_qa_tool/ui/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+networks:
+  sop-qa-network:
+    driver: bridge
